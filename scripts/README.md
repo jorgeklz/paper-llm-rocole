@@ -3,24 +3,30 @@
 This directory contains the executable PyTorch training scripts produced by each of the five LLMs (ChatGPT, Claude, DeepSeek, Gemini, Qwen) under each of the three prompt tiers (`tier1` Basic, `tier2` Structured, `tier3` Detailed) for both tasks (`task_a_binary` and `task_b_3class`).
 
 ## Layout
-
-```
 scripts/
 ├── task_a_binary/
-│   ├── tier1/   chatgpt.py, claude.py, deepseek.py  (Gemini and Qwen failed: see Validity Rate)
-│   ├── tier2/   chatgpt.py, claude.py, deepseek.py, qwen.py  (Gemini failed)
+│   ├── tier1/   chatgpt.py, claude.py, deepseek.py, gemini.py [bug], qwen.py [bug]
+│   ├── tier2/   chatgpt.py, claude.py, deepseek.py, gemini.py [bug], qwen.py
 │   └── tier3/   chatgpt.py, claude.py, deepseek.py, gemini.py, qwen.py
 └── task_b_3class/
-    ├── tier1/   chatgpt.py, claude.py, deepseek.py, gemini.py, qwen.py
-    ├── tier2/   chatgpt.py, claude.py, deepseek.py, gemini.py, qwen.py
-    └── tier3/   chatgpt.py, claude.py, deepseek.py, gemini.py  (Qwen failed)
-```
+├── tier1/   chatgpt.py, claude.py, deepseek.py, gemini.py, qwen.py
+├── tier2/   chatgpt.py, claude.py, deepseek.py, gemini.py, qwen.py
+└── tier3/   chatgpt.py, claude.py, deepseek.py, gemini.py, qwen.py [bug]
 
 ## Important notes
 
-**These scripts are LLM output, reproduced verbatim** with one minimal modification: the hard-coded random seed has been parameterized to read from the environment variable `EXPERIMENT_SEED` for replication purposes. No other line of code has been changed.
+**These scripts are LLM output, reproduced verbatim.** No edits were applied except, in the scripts that ran successfully, the LLM's hard-coded random seed (if any) was parameterized to read from the environment variable `EXPERIMENT_SEED` for replication purposes.
 
-The four scripts referenced in the paper as Validity Rate failures (Gemini at Task A Tier 1 and Tier 2; Qwen at Task A Tier 1; Qwen at Task B Tier 3) are intentionally **not included** in this repository because the LLMs did not produce executable code in those cases. Instead, the verbatim erroneous outputs (with their specific syntax or runtime errors) are documented in the paper, Section "Validity Rate and Code-Level Failures".
+**Four scripts contain code-level bugs** and are included for auditability and Validity-Rate analysis (see paper):
+
+| Script | Bug |
+|--------|-----|
+| `task_a_binary/tier1/gemini.py` | Missing `.detach()` before `.numpy()` conversion |
+| `task_a_binary/tier2/gemini.py` | Unclosed parenthesis in a `print` statement |
+| `task_a_binary/tier1/qwen.py` | `ReduceLROnPlateau(verbose=True)` removed in PyTorch 2.2 |
+| `task_b_3class/tier3/qwen.py` | `RandomErasing` applied before `ToTensor()` in the augmentation pipeline |
+
+These four cells contribute to the Validity Rate metric reported in the paper and are intentionally **not corrected**.
 
 ## How to inspect
 
