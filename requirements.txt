@@ -1,0 +1,30 @@
+# Python dependencies for reproducing the experimental campaign.
+# Versions match those used in the published results (Linux x86_64, Python 3.12).
+# Install with: pip install -r requirements.txt
+
+# Core deep learning (CPU build)
+torch==2.12.0
+torchvision==0.17.0
+
+# Numerical and scientific computing
+numpy>=1.24,<2.0
+pandas>=2.0,<3.0
+scipy>=1.11,<2.0
+
+# Machine learning utilities and metrics
+scikit-learn>=1.4,<2.0
+
+# Image processing
+Pillow>=10.0,<12.0
+
+# Progress bars and logging
+tqdm>=4.65,<5.0
+
+# System resource monitoring
+psutil>=5.9,<7.0
+
+# Plotting
+matplotlib>=3.7,<4.0
+
+# Excel reading (RoCoLe annotations)
+openpyxl>=3.1,<4.0
